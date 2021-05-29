@@ -1,6 +1,6 @@
 package kodlamaio.hrms.entities;
 
-import java.time.LocalDate;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,7 +31,7 @@ public class employees extends users{
 	private String identityNumber;
 	
 	@Column(name="birth_of_date")
-	private LocalDate birthOfDate;
+	private String birthOfDate;
 	
 	@Column(name="password_repeat")
 	private String passwordRepeat;
