@@ -12,6 +12,7 @@ import lombok.Data;
 @Data
 @Entity 
 @Table(name="employers")
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","jobAdvertisement"})
 public class employers extends users{
 
 	 @Id
@@ -31,4 +32,7 @@ public class employers extends users{
 	 
 	@Column(name="password_repeat")
 	private String passwordRepeat;
+	
+	@OneToMany(mappedBy = "employer")
+	private List<JobAdvertisement> jobAdvertisement;
 }
