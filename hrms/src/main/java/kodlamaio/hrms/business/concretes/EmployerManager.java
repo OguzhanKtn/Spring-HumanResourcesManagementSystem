@@ -43,7 +43,7 @@ public class EmployerManager implements EmployerService{
 	@Override
 	public Result add(employers employer) {
 		
-		 Pattern mailPatern = Pattern.compile("[a-z A-Z 0-9]+@[a-z A-Z 0-9]+\\.[a-z A-Z 0-9]+$");
+	 Pattern mailPatern = Pattern.compile("[a-z A-Z 0-9]+@[a-z A-Z 0-9]+\\.[a-z A-Z 0-9]+$");
          Matcher mailmatcher = mailPatern.matcher(employer.getEmail());
 		
 		if(employer.getCompanyName() == null || employer.getEmail() == null || employer.getPassword() == null ||
