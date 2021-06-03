@@ -50,7 +50,7 @@ public class employeeManager implements employeeService{
 			
 		}else
 		
-		if(employee.getPassword() != employee.getPasswordRepeat()) {
+		if(!employee.getPassword().equals(employee.getPasswordRepeat())) {
 			
 			return new ErrorResult("Check your password again");
 		}
