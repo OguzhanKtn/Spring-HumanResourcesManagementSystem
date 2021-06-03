@@ -53,7 +53,7 @@ public class EmployerManager implements EmployerService{
 			
 			
 			
-		}else if(employer.getPassword() != employer.getPasswordRepeat()) {
+		}else if(!employer.getPassword().equals(employer.getPasswordRepeat())) {
 			
 			return new ErrorResult("Check your password again");
 			
