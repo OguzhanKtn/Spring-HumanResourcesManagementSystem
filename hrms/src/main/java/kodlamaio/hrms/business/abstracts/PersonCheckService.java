@@ -1,8 +1,8 @@
 package kodlamaio.hrms.business.abstracts;
 
-import kodlamaio.hrms.entities.users;
+import kodlamaio.hrms.entities.Users;
 
 public interface PersonCheckService {
 
-	public boolean checkIfRealPerson(users user);
+	public boolean checkIfRealPerson(Users user);
 }

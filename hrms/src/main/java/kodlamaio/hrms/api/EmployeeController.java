@@ -7,30 +7,30 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import kodlamaio.hrms.business.abstracts.employeeService;
+import kodlamaio.hrms.business.abstracts.EmployeeService;
 import kodlamaio.hrms.core.utilities.results.DataResult;
 import kodlamaio.hrms.core.utilities.results.Result;
-import kodlamaio.hrms.entities.employees;
+import kodlamaio.hrms.entities.Employees;
 
 @RestController
 @RequestMapping("/api/employees")
 public class EmployeeController {
 
-	private employeeService EmployeeService;
+	private EmployeeService employeeService;
 
-	public EmployeeController(employeeService employeeService) {
+	public EmployeeController(EmployeeService employeeService) {
 		super();
-		EmployeeService = employeeService;
+		this.employeeService = employeeService;
 	}
 	
     @GetMapping("/getall")
-    public DataResult<List<employees>> getAll() {
+    public DataResult<List<Employees>> getAll() {
     	
-        return EmployeeService.getAll();
+        return employeeService.getAll();
     }
 
     @PostMapping("/add")
-    public Result add(@RequestBody employees employee) {
-        return EmployeeService.add(employee);
+    public Result add(@RequestBody Employees employee) {
+        return employeeService.add(employee);
     }
 }

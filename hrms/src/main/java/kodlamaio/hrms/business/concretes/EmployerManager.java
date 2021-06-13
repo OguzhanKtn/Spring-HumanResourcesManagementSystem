@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,37 +15,43 @@ import kodlamaio.hrms.core.utilities.results.DataResult;
 import kodlamaio.hrms.core.utilities.results.ErrorResult;
 import kodlamaio.hrms.core.utilities.results.Result;
 import kodlamaio.hrms.core.utilities.results.SuccessDataResult;
-import kodlamaio.hrms.dataAccess.employerDao;
-import kodlamaio.hrms.entities.employees;
-import kodlamaio.hrms.entities.employers;
+import kodlamaio.hrms.core.utilities.results.SuccessResult;
+import kodlamaio.hrms.dataAccess.EmployerDao;
+import kodlamaio.hrms.entities.Employers;
+import kodlamaio.hrms.entities.dtos.EmployerPostDto;
+import kodlamaio.hrms.entities.Employees;
+
 
 @Service
 public class EmployerManager implements EmployerService{
 	
-	private employerDao EmployerDao;
+	private EmployerDao employerDao; 
 	private MailService mailService;
-	private ApprovalOfSystemPersonalService confirmation;
-
+	private ApprovalOfSystemPersonalService confirmation; 
+	private ModelMapper modelMapper;
+	
 	@Autowired
-	public EmployerManager(employerDao employerDao, MailService mailService,
-			ApprovalOfSystemPersonalService confirmation) {
+	public EmployerManager(EmployerDao employerDao, MailService mailService,
+			ApprovalOfSystemPersonalService confirmation,ModelMapper modelMapper) {
 		super();
-		EmployerDao = employerDao;
+		this.employerDao = employerDao;
 		this.mailService = mailService;
 		this.confirmation = confirmation;
+		this.modelMapper = modelMapper;
+	}
+
+	
+	
+	@Override
+	public DataResult<List<Employers>> getAll() {
+		
+		return new SuccessDataResult<List<Employers>>(this.employerDao.findAll(),"Successfully Listed");
 	}
 
 	@Override
-	public DataResult<List<employers>> getAll() {
+	public Result add(EmployerPostDto employer) {
 		
-		return new SuccessDataResult<List<employers>>(this.EmployerDao.findAll(),"Successfully Listed");
-	}
-
-	@Override
-	public Result add(employers employer) {
-		
-		 Pattern mailPatern = Pattern.compile("[a-z A-Z 0-9]+@[a-z A-Z 0-9]+\\.[a-z A-Z 0-9]+$");
-         Matcher mailmatcher = mailPatern.matcher(employer.getEmail());
+		Employers employer2 = this.modelMapper.map(employer,Employers.class);
 		
 		if(employer.getCompanyName() == null || employer.getEmail() == null || employer.getPassword() == null ||
 		   employer.getPasswordRepeat() == null || employer.getPhoneNumber() == null || employer.getWebAdress() == null) {
@@ -52,24 +59,28 @@ public class EmployerManager implements EmployerService{
 			return new ErrorResult ("All fields are required");
 			
 			
-			
-		}else if(employer.getPassword() != employer.getPasswordRepeat()) {
+		} 
+		
+		
+		if(!employer.getPassword().equals(employer.getPasswordRepeat())) {
 			
 			return new ErrorResult("Check your password again");
 			
-		}else if(mailmatcher.matches()) {
-            String[] domainsWebsite = employer.getWebAdress().split("[.]+");
-            String[] domainsMail = employer.getEmail().split("[.]+");
-            
-            if (domainsMail[domainsMail.length - 1] !=  domainsWebsite[domainsWebsite.length - 1]) {
-            	
-            	return new ErrorResult("invalid e-mail adress");
-            }
 		}
 		
+		 
+            String[] domainsWebsite = employer.getWebAdress().split("[.]", 2); 
+            String[] domainsMail = employer.getEmail().split("[@]+", 0); 
+            if (!domainsMail[domainsMail.length - 1].equals(domainsWebsite[domainsWebsite.length - 1])) {
+            	
+            	return new ErrorResult("invalid e-mail adress"); 
+          }
+            	
 		
-		List<employers> employers = this.EmployerDao.findAll();
-		for(employers Employer : employers) {
+		
+		
+		List<Employers> employers = this.employerDao.findAll();
+		for(Employers Employer : employers) {
 			if(employer.getEmail().equals(Employer.getEmail())) {
 				
 				return new ErrorResult("This e-mail adress has already exist");
@@ -77,15 +88,22 @@ public class EmployerManager implements EmployerService{
 			}
 			
 		}
-		if(confirmation.confirmation(employer)==false) {
+		
+		
+		if(confirmation.confirmation(employer2)==false) {
 			
 			return new ErrorResult("Verification failed");
 			
-		}else if(confirmation.confirmation(employer)==true) {
+		}else if(confirmation.confirmation(employer2)==true) {
 			
 			mailService.sendMail(employer);
 		}
-		return new SuccessDataResult(employer,"Registration has been completed successfully");
+			this.employerDao.save(employer2);
+		return new SuccessResult("Registration has been completed successfully");
 	}
+
+	
+
+	
 
 }

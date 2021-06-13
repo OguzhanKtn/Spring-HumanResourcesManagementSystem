@@ -1,9 +1,9 @@
 package kodlamaio.hrms.business.abstracts;
 
 import kodlamaio.hrms.core.utilities.results.SuccessResult;
-import kodlamaio.hrms.entities.users;
+import kodlamaio.hrms.entities.Users;
 
 public interface MailService {
 
-	public SuccessResult sendMail(users user);
+	public SuccessResult sendMail(Users user);
 }

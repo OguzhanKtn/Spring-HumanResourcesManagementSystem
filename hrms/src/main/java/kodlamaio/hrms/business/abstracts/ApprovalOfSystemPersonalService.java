@@ -1,8 +1,8 @@
 package kodlamaio.hrms.business.abstracts;
 
-import kodlamaio.hrms.entities.employers;
+import kodlamaio.hrms.entities.Employers;
 
 public interface ApprovalOfSystemPersonalService {
 
-	public boolean confirmation(employers employer);
+	public boolean confirmation(Employers employer);
 }

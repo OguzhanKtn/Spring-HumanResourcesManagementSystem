@@ -10,29 +10,29 @@ import kodlamaio.hrms.core.utilities.results.DataResult;
 import kodlamaio.hrms.core.utilities.results.Result;
 import kodlamaio.hrms.core.utilities.results.SuccessDataResult;
 import kodlamaio.hrms.core.utilities.results.SuccessResult;
-import kodlamaio.hrms.dataAccess.jobTitleDao;
-import kodlamaio.hrms.entities.employers;
-import kodlamaio.hrms.entities.jobTitles;
+import kodlamaio.hrms.dataAccess.JobTitleDao;
+import kodlamaio.hrms.entities.Employers;
+import kodlamaio.hrms.entities.JobTitles;
 
 @Service
 public class JobTitleManager implements JobTitleService{
 
-	private jobTitleDao jobDao;
+	private JobTitleDao jobDao;
 	
 	@Autowired
-	public JobTitleManager(jobTitleDao jobDao) {
+	public JobTitleManager(JobTitleDao jobDao) {
 		super();
 		this.jobDao = jobDao;
 	}
 
 	@Override
-	public DataResult<List<jobTitles>> getAll() {
+	public DataResult<List<JobTitles>> getAll() {
 		
-		return new SuccessDataResult<List<jobTitles>>(this.jobDao.findAll(),"Successfully Listed");
+		return new SuccessDataResult<List<JobTitles>>(this.jobDao.findAll(),"Successfully Listed");
 	}
 
 	@Override
-	public Result add(jobTitles jobTitle) {
+	public Result add(JobTitles jobTitle) {
 		// TODO Auto-generated method stub
 		return new SuccessResult("Successfully added");
 	}
