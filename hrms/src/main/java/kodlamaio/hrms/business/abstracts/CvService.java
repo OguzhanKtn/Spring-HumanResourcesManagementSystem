@@ -10,7 +10,7 @@ import kodlamaio.hrms.entities.Cv;
 public interface CvService {
 
 	DataResult<List<Cv>> getAll();
-	Result add(Cv cv);
+	Result add(CvPostDto cv);
 	DataResult<List<Cv>> getByCvIdForEmployeeId(int employeeId);
 	
 }
