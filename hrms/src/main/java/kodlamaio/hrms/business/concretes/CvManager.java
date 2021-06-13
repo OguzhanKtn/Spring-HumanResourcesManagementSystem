@@ -31,8 +31,9 @@ public class CvManager implements CvService{
 	}
 
 	@Override
-	public Result add(Cv cv) {
-		this.cvDao.save(cv);
+	public Result add(CvPostDto cv) {
+		Cv cv2 = this.modelMapper.map(cv,Cv.class);
+		this.cvDao.save(cv2);
 		return new SuccessResult("Resume has added");
 	}
 
